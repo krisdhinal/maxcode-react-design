@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { logout } from "../utils/Auth";
+import Maxcode from "../assets/maxcode.png";
+import { Link, useNavigate } from "react-router-dom";
 
-const Dashboard = ({ onLogout }) => {
+const Layout = ({ children, title }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const [barcodeSubmenuOpen, setBarcodeSubmenuOpen] = useState(true); // Added state for barcode submenu
 
   const handleLogout = () => {
     logout();
+    navigate("/login");
     toast.info("Anda telah logout", { position: "top-right" });
-    onLogout();
   };
 
   return (
@@ -24,13 +27,17 @@ const Dashboard = ({ onLogout }) => {
           mobileMenuOpen ? "block" : "hidden"
         } md:block h-full z-30`}
       >
-        <div className="flex justify-between items-center p-4">
-          <span className={`${sidebarOpen ? "block" : "hidden"} text-xl font-bold`}>
-            Dashboard
-          </span>
+        <div className="flex justify-between items-center text-black p-3 bg-white">
+          <img
+            src={Maxcode}
+            alt="logo"
+            className={`${!sidebarOpen ? "w-auto h-auto" : "w-[32px]"}`}
+          />
+          {sidebarOpen ? <p>MAXCODE</p> : null}
+
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white p-2 focus:outline-none hidden md:block"
+            className="text-black p-2 focus:outline-none hidden md:block"
           >
             {sidebarOpen ? (
               <svg
@@ -72,7 +79,12 @@ const Dashboard = ({ onLogout }) => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -80,7 +92,7 @@ const Dashboard = ({ onLogout }) => {
           <ul>
             {/* Barcode Menu */}
             <li className="text-sm text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
-              <button 
+              <button
                 onClick={() => setBarcodeSubmenuOpen(!barcodeSubmenuOpen)}
                 className="w-full flex items-center space-x-2"
               >
@@ -194,9 +206,9 @@ const Dashboard = ({ onLogout }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col bg-white">
         {/* Navbar */}
-        <nav className="bg-gray-800 text-white p-4">
+        <nav className="bg-gray-800 text-black p-4 bg-white">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               {/* Mobile menu button */}
@@ -211,10 +223,15 @@ const Dashboard = ({ onLogout }) => {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               </button>
-              <div className="text-xl font-bold ml-2">Dashboard</div>
+              <div className="text-xl font-bold ml-2">{title}</div>
             </div>
             <div className="relative">
               <button
@@ -247,14 +264,6 @@ const Dashboard = ({ onLogout }) => {
                 <div className="absolute right-0 mt-2 bg-white text-gray-800 shadow-lg rounded-md w-48">
                   <ul className="py-2">
                     <li>
-                      <a
-                        href="#profile"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        Profile Page
-                      </a>
-                    </li>
-                    <li>
                       <button
                         onClick={handleLogout}
                         className="block px-4 py-2 text-sm w-full text-left hover:bg-gray-100"
@@ -270,12 +279,26 @@ const Dashboard = ({ onLogout }) => {
         </nav>
 
         {/* Content */}
-        <div className="flex-1 p-4 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Welcome to the Dashboard!</h1>
-              <p className="mt-4 text-gray-600">This is a responsive dashboard layout that works on mobile, tablet, and desktop screens.</p>
-            </div>
+        <div className="flex-1 overflow-auto">
+            <nav className="bg-gray-100 p-4">
+              <ol className="flex space-x-2 text-sm">
+                <li>
+                  <Link to="/" className="text-blue-600 hover:underline">
+                    Home
+                  </Link>
+                </li>
+                <li>/</li>
+                <li>
+                  <Link to="/barcode" className="text-blue-600 hover:underline">
+                    Barcode
+                  </Link>
+                </li>
+                <li>/</li>
+                <li className="text-gray-500">Print Product</li>
+              </ol>
+            </nav>
+          <div className="bg-gray-100 min-h-screen p-4 flex justify-center">
+            {children}
           </div>
         </div>
       </div>
@@ -283,4 +306,4 @@ const Dashboard = ({ onLogout }) => {
   );
 };
 
-export default Dashboard;
+export default Layout;

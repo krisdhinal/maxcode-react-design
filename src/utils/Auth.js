@@ -8,7 +8,7 @@ export const login = (email, password) => {
   };
   
   export const logout = () => {
-    localStorage.removeItem("user");
+	localStorage.clear()
   };
   
   export const isAuthenticated = () => {

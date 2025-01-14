@@ -7,11 +7,11 @@ function Login() {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("accessToken", "234b9399-98ad-4e74-ad8e-f23f10f3b501");
+    localStorage.setItem("accessToken", "c6396edc-cb38-4395-8bb0-486b161dddd5");
     localStorage.setItem("session", "dd19962d-b489-405c-a643-a8dffa609f58");
     localStorage.setItem(
       "token",
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmlzZGhpbmFsQGdtYWlsLmNvbSIsImlhdCI6MTczNjQ2ODczOSwiZXhwIjoxNzM2NTU1MTM5fQ.oVQmlKeVzBr2QKtHCqglx9w5Ock4BA6O0xJACeQY7MlGhA29fNfaxZVq-o-VIUC6ER87U40kCerQZ5C7_AhEsw"
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmlzZGhpbmFsQGdtYWlsLmNvbSIsImlhdCI6MTczNjg1NjU3MiwiZXhwIjoxNzM2OTQyOTcyfQ.i41Xlp8VAlgx2xux-f-5CCKX_OslyfdXv--KhwkOqikbWnoCILOlThKYCnneAnG_KtK1AhbMyrKVtEVixEi7ww"
     );
     toast.success("Anda berhasil login!", { position: "top-right" });
     navigate("/");

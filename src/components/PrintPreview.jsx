@@ -221,7 +221,7 @@ function PrintPreview(props) {
 
 		  }
 		  .right{
-		  float: ${settings?.showDisplay ? "right" : "left"};
+		  float: ${(settings?.printPerLine > 1 && settings?.showDisplay) ? "right" : "left"};
           page-break-inside: avoid !important;
 		  padding: 0px;
 		  width: fit-content;
@@ -309,7 +309,9 @@ function PrintPreview(props) {
         style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
       >
         <div
-          className="border border-gray-500 border-dashed flex items-center justify-between print-container"
+          className={`border border-gray-500 border-dashed flex  justify-between print-container ${
+            settings?.printPerLine > 1 ? "flex-row items-center" : "flex-col"
+          }`}
           style={printStyles}
           ref={contentRef}
         >

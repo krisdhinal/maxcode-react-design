@@ -1,34 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-const PrintSettings = ({ onSave }) => {
-  const initState = {
-    showName: true,
-    showPrice: true,
-    showCode: true,
-    showBarcode: true,
-    showDate: true,
-    showDisplay: false,
-    barcodeWidth: 2,
-    barcodeHeight: 100,
-    pageWidth: 10.3,
-    pageHeight: 2.3,
-    fontSize: 14,
-    fontPrice: 16,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    barcodeType: "CODE128",
-    printPerLine: 3,
-  };
-  const [settings, setSettings] = useState(initState);
+const PrintSettings = ({ onSave, printSettings }) => {
 
-  useEffect(() => {
-    const savedSettings = JSON.parse(localStorage.getItem("printSettings"));
-    if (savedSettings) {
-      setSettings(savedSettings);
-    }
-  }, []);
+  const [settings, setSettings] = useState(printSettings);
+
+  useEffect(()=>{
+	setSettings(printSettings)
+  },[printSettings])
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
@@ -39,8 +17,9 @@ const PrintSettings = ({ onSave }) => {
   };
 
   const handleSave = () => {
-    localStorage.setItem("printSettings", JSON.stringify(settings));
     onSave(settings);
+    localStorage.setItem("printSettings", JSON.stringify(settings));
+
   };
 
   return (

@@ -29,7 +29,7 @@ function Home() {
     marginLeft: 10,
     marginRight: 10,
     barcodeType: "CODE128",
-    printPerLine: 3,
+    printPerLine: 2,
   };
   const [printSettings, setPrintSettings] = useState(initStatePrint);
   useEffect(() => {
@@ -92,7 +92,7 @@ function Home() {
 
                 {product?.itemBarcode ? (
                   <>
-                    <PrintSettings onSave={setPrintSettings} />
+                    <PrintSettings onSave={setPrintSettings} printSettings={printSettings} />
                     <PrintPreview
                       settings={printSettings}
                       handleChange={handleChange}

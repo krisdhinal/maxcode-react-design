@@ -42,22 +42,42 @@ const BarcodePreview = ({ code, settings, product }) => {
   const handlePrint = () => {
     setTimeout(() => {
       const element = document.getElementById("print-area");
+      element.style.visibility = "visible";
+
       if (!element) {
         console.error(`Element with  not found.`);
         return;
       }
-      document.body.style.height = `${settings?.pageHeight}cm !important`;
-      document.body.style.width = `${settings?.pageWidth}cm !important`;
-      element.style.visibility = "visible";
+
       const originalContent = document.body.innerHTML;
       document.body.innerHTML = element.outerHTML;
 
-      setTimeout(() => {
-        window.print();
-        document.body.innerHTML = originalContent;
+      const css = `@page { size: ${settings?.pageWidth}cm ${settings?.pageHeight}cm; } 
+	 @media print {
+		div {
+			break-inside: avoid;
+			display: block;
+		}
+	 } 
+	  `;
+      const head = document.head || document.getElementsByTagName("head")[0];
+      const style = document.createElement("style");
 
-        window.location.reload();
-      }, 1000);
+      style.type = "text/css";
+      style.media = "print";
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      head.appendChild(style);
+
+      window.print();
+      document.body.innerHTML = originalContent;
+
+      window.location.reload();
     }, 500);
   };
 
@@ -71,23 +91,31 @@ const BarcodePreview = ({ code, settings, product }) => {
             id="print-area"
             style={{ ...printStyles, height: 1, visibility: "hidden" }}
           >
-            {settings.showName && (
-              <h2 className="text-xl">{product?.itemName}</h2>
-            )}
-            {settings.showPrice && (
-              <p
-                style={{
-                  fontSize: `${settings.fontPrice}px`,
-                }}
-              >
-                {formatRupiah(product?.itemPrice)}
-              </p>
-            )}
-            {settings.showCode && <p>{product?.itemBarcode}</p>}
-            {settings.showDate && (
-              <p>{settings.showDate && moment().format("DD MMM YYYY")}</p>
-            )}
-            <svg ref={svgRef} className="mt-4" />
+            <div
+              style={{
+                height: `${settings?.pageHeight}px`,
+                width: `${settings?.pageWidth}px`,
+              }}
+			  className="div"
+            >
+              {settings.showName && (
+                <h2 className="text-xl">{product?.itemName}</h2>
+              )}
+              {settings.showPrice && (
+                <p
+                  style={{
+                    fontSize: `${settings.fontPrice}px`,
+                  }}
+                >
+                  {formatRupiah(product?.itemPrice)}
+                </p>
+              )}
+              {settings.showCode && <p>{product?.itemBarcode}</p>}
+              {settings.showDate && (
+                <p>{settings.showDate && moment().format("DD MMM YYYY")}</p>
+              )}
+              <svg ref={svgRef} className="mt-4" />
+            </div>
           </div>
           <button
             onClick={handlePrint}

@@ -1,32 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-const PrintSettings = ({ onSave }) => {
-  const initState = {
-    showName: true,
-    showPrice: true,
-    showCode: true,
-    showDate: false,
-    barcodeWidth: 2,
-    barcodeHeight: 100,
-    pageWidth: 10.3,
-    pageHeight: 2.3,
-    fontSize: 14,
-    fontPrice: 16,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    barcodeType: "CODE128",
-    printPerLine: 3,
-  };
-  const [settings, setSettings] = useState(initState);
+const PrintSettings = ({ onSave, printSettings }) => {
 
-  useEffect(() => {
-    const savedSettings = JSON.parse(localStorage.getItem("printSettings"));
-    if (savedSettings) {
-      setSettings(savedSettings);
-    }
-  }, []);
+  const [settings, setSettings] = useState(printSettings);
+
+  useEffect(()=>{
+	setSettings(printSettings)
+  },[printSettings])
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
@@ -37,61 +17,15 @@ const PrintSettings = ({ onSave }) => {
   };
 
   const handleSave = () => {
-    localStorage.setItem("printSettings", JSON.stringify(settings));
     onSave(settings);
+    localStorage.setItem("printSettings", JSON.stringify(settings));
+
   };
 
   return (
-    <div className="border p-4 rounded shadow-md mb-4">
+    <div className="mb-8 mt-4">
       <h3 className="text-lg font-semibold mb-2">Print Settings</h3>
       <div className="grid grid-cols-2 gap-4">
-        {/* Checkbox Pengaturan */}
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              name="showName"
-              checked={settings.showName}
-              onChange={handleChange}
-            />
-            <span className="ml-2">Show Name</span>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              name="showPrice"
-              checked={settings.showPrice}
-              onChange={handleChange}
-            />
-            <span className="ml-2">Show Price</span>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              name="showCode"
-              checked={settings.showCode}
-              onChange={handleChange}
-            />
-            <span className="ml-2">Show Code</span>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              name="showDate"
-              checked={settings.showDate}
-              onChange={handleChange}
-            />
-            <span className="ml-2">Show Date</span>
-          </label>
-        </div>
-
-        {/* Input untuk Dimensi Barcode */}
         <div>
           <label>
             Barcode Width Per Bar:
@@ -116,8 +50,6 @@ const PrintSettings = ({ onSave }) => {
             />
           </label>
         </div>
-
-        {/* Input untuk Dimensi Halaman */}
         <div>
           <label>
             Page Width (cm):
@@ -218,8 +150,6 @@ const PrintSettings = ({ onSave }) => {
             />
           </label>
         </div>
-
-        {/* Tipe Barcode */}
         <div>
           <label>
             Barcode Type:
@@ -235,8 +165,6 @@ const PrintSettings = ({ onSave }) => {
             </select>
           </label>
         </div>
-
-        {/* Per Baris */}
         <div>
           <label>
             Print Per Line:

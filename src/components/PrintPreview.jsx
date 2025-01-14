@@ -50,6 +50,7 @@ function PrintPreview(props) {
           height={settings?.barcodeHeight}
           width={settings?.barcodeWidth}
           fontSize={settings?.fontSize}
+          format={settings?.barcodeType}
         />
       ),
       className: "text-xs font-bold",
@@ -66,6 +67,15 @@ function PrintPreview(props) {
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDate,
+    },
+    {
+      id: 4,
+      text: formatRupiah(data?.itemPrice),
+      className: `text-xs font-bold`,
+      isShow: settings.showPrice,
+      style: {
+        fontSize: `${settings?.fontPrice}px`,
+      },
     },
   ]);
   useEffect(() => {
@@ -86,25 +96,35 @@ function PrintPreview(props) {
       }
       return data;
     });
-    const newList = lists?.map((item) => ({
-      ...item,
-      text:
-        item.id === 1 ? (
-          <Barcode
-            value={data?.itemBarcode}
-            displayValue={settings.showCode}
-            height={settings?.barcodeHeight}
-            width={settings?.barcodeWidth}
-            fontSize={settings?.fontSize}
-          />
-        ) : (
-          item.text
-        ),
-      isShow:
-        (item?.id === 1 && settings.showBarcode) ||
-        (item?.id === 2 && settings.showName) ||
-        (item?.id === 3 && settings.showDate),
-    }));
+    const newList = lists?.map((item) => {
+      let list = {
+        ...item,
+        text:
+          item.id === 1 ? (
+            <Barcode
+              value={data?.itemBarcode}
+              displayValue={settings.showCode}
+              height={settings?.barcodeHeight}
+              width={settings?.barcodeWidth}
+              fontSize={settings?.fontSize}
+              format={settings?.barcodeType}
+            />
+          ) : (
+            item.text
+          ),
+        isShow:
+          (item?.id === 1 && settings.showBarcode) ||
+          (item?.id === 2 && settings.showName) ||
+          (item?.id === 3 && settings.showDate) ||
+          (item?.id === 4 && settings.showPrice),
+      };
+      if (item?.id === 4) {
+        list.style = {
+          fontSize: `${settings?.fontPrice}px`,
+        };
+      }
+      return list;
+    });
     setCards(newData);
     setLists(newList);
   }, [settings]);
@@ -185,6 +205,9 @@ function PrintPreview(props) {
     size: ${settings?.pageWidth}cm ${settings?.pageHeight}cm;
         margin: 0mm;
   }
+		*{
+		fontSize: ${settings?.fontSize}px !important;
+		}
   .print-container {
 		  display: block !important;
 		  border: none !important;
@@ -197,7 +220,7 @@ function PrintPreview(props) {
 
 		  }
 		  .right{
-		  float: right;
+		  float: ${settings?.showDisplay ? "right" : "left"};
           page-break-inside: avoid !important;
 		  padding: 0px;
 
@@ -298,25 +321,6 @@ function PrintPreview(props) {
             <div className="flex flex-col items-center">
               {lists.map((card, i) => renderList(card, i))}
             </div>
-
-            {/* <div className="flex flex-col items-center">
-            {settings.showBarcode
-              ? data?.itemBarcode && (
-                  <Barcode
-                    value={data?.itemBarcode}
-                    displayValue={settings.showCode}
-                  />
-                )
-              : null}
-            {settings.showName ? (
-              <p className="text-xs font-bold">{data?.itemName}</p>
-            ) : null}
-            {settings.showDate ? (
-              <p className="text-[8px] font-bold">
-                {moment().format("DD MMM YYYY")}
-              </p>
-            ) : null}
-          </div> */}
           </div>
         </div>
       </div>

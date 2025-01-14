@@ -206,7 +206,7 @@ function PrintPreview(props) {
         margin: 0mm;
   }
 		*{
-		fontSize: ${settings?.fontSize}px !important;
+		font-size: ${settings?.fontSize}px;
 		}
   .print-container {
 		  display: block !important;
@@ -217,12 +217,14 @@ function PrintPreview(props) {
 		  float: left;
           page-break-inside: avoid !important;
 		  padding: 0px;
+		  width: fit-content;
 
 		  }
 		  .right{
 		  float: ${settings?.showDisplay ? "right" : "left"};
           page-break-inside: avoid !important;
 		  padding: 0px;
+		  width: fit-content;
 
 		  }
 	body {

@@ -10,6 +10,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 function Home() {
   const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const initStatePrint = JSON.parse(localStorage.getItem("printSettings")) || {
     showName: true,
@@ -50,6 +51,7 @@ function Home() {
   };
 
   const handleSearch = async () => {
+    setIsLoading(true);
     try {
       const productData = await fetchProductDetails(query);
       if (productData?.data) {
@@ -59,8 +61,17 @@ function Home() {
       }
     } catch (err) {
       toast.error(err.message || "Data not found", { position: "top-right" });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && query.length > 0) {
+      handleSearch();
+    }
+  };
+
   return (
     <Layout>
       <DndProvider
@@ -77,15 +88,25 @@ function Home() {
                 placeholder="Enter Product Name or SKU"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
               <button
                 onClick={handleSearch}
-                disabled={query.length === 0}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                disabled={query.length === 0 || isLoading}
+                className={`px-4 py-2 rounded ${
+                  isLoading
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
               >
-                Search
+                {isLoading ? "Loading..." : "Search"}
               </button>
             </div>
+            {isLoading && (
+              <div className="flex justify-center items-center mt-4">
+                <div className="loader"></div>
+              </div>
+            )}
             {product ? (
               <div className="border p-4 rounded shadow-md">
                 <DetailProduct data={product} />

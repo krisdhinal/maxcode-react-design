@@ -99,14 +99,21 @@ function Home() {
                     : "bg-blue-500 text-white hover:bg-blue-600"
                 }`}
               >
-                {isLoading ? "Loading..." : "Search"}
-              </button>
+                {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <span className="loader-clock"></span>
+                  Loading...
+                </div>
+              ) : (
+                "Search"
+              )}
+            </button>
+          </div>
+          {isLoading && (
+            <div className="flex justify-center items-center mt-4">
+              <span className="loader-clock"></span>
             </div>
-            {isLoading && (
-              <div className="flex justify-center items-center mt-4">
-                <div className="loader"></div>
-              </div>
-            )}
+          )}
             {product ? (
               <div className="border p-4 rounded shadow-md">
                 <DetailProduct data={product} />

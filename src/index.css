@@ -2,21 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-.loader {
-    border: 4px solid #f3f3f3;
+.loader-clock {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #3498db;
     border-radius: 50%;
-    border-top: 4px solid #3498db;
-    width: 20px;
-    height: 20px;
     animation: spin 1s linear infinite;
-}
+  }
   
-@keyframes spin {
+  .loader-clock:before,
+  .loader-clock:after {
+    content: "";
+    position: absolute;
+    background: #3498db;
+    border-radius: 2px;
+  }
+  
+  .loader-clock:before {
+    width: 2px;
+    height: 8px;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .loader-clock:after {
+    width: 2px;
+    height: 6px;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+  
+  @keyframes spin {
     0% {
-        transform: rotate(0deg);
+      transform: rotate(0deg);
     }
     100% {
-        transform: rotate(360deg);
+      transform: rotate(360deg);
     }
-}
+  }
   

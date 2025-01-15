@@ -304,6 +304,7 @@ function PrintPreview(props) {
           </label>
         </div>
       </div>
+      <br />
       <div
         className="overflow-auto"
         style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
@@ -329,6 +330,7 @@ function PrintPreview(props) {
         </div>
       </div>
       <div>
+        <br />
         <button
           onClick={() => reactToPrintFn()}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"

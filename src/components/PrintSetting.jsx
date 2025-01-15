@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const PrintSettings = ({ onSave, printSettings }) => {
 
@@ -18,8 +19,16 @@ const PrintSettings = ({ onSave, printSettings }) => {
 
   const handleSave = () => {
     onSave(settings);
-    localStorage.setItem("printSettings", JSON.stringify(settings));
-
+    localStorage.setItem("printSettings", JSON.stringify(settings))
+    toast.success("Setting printer berhasil disimpan!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (

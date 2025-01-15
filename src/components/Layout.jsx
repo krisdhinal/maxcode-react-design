@@ -172,7 +172,7 @@ const Layout = ({ children, title }) => {
                       <span>Print</span>
                     </div>
                   </li>
-                  {/* Settings Submenu */}
+                  {/* Settings Submenu 
                   <li className="text-sm text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
                     <div className="flex items-center space-x-2">
                       <svg
@@ -197,7 +197,7 @@ const Layout = ({ children, title }) => {
                       </svg>
                       <span>Print Setting</span>
                     </div>
-                  </li>
+                  </li> */}
                 </ul>
               )}
             </li>

@@ -3,7 +3,7 @@ import { formatRupiah } from "../utils/FormattedPrice";
 import Barcode from "react-barcode";
 
 function DetailProduct(props) {
-  const { data } = props;
+  const { data, handleQuantityChange } = props;
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -15,6 +15,11 @@ function DetailProduct(props) {
             <th scope="col" className="px-6 py-3">
               Price
             </th>
+            {data?.itemBarcode ? (
+              <th scope="col" className="px-6 py-3 w-[15%]">
+                Print Quantity
+              </th>
+            ) : null}
             <th scope="col" className="px-6 py-3">
               Barcode
             </th>
@@ -29,6 +34,18 @@ function DetailProduct(props) {
               {data?.itemName}
             </th>
             <td className="px-6 py-4">{formatRupiah(data?.itemPrice)}</td>
+            {data?.itemBarcode ? (
+              <td className="px-6 py-4 w-[15%]">
+                <input
+                  type="number"
+				  value={data?.quantity || 1}
+				  min={1}
+				  onChange={(e)=> handleQuantityChange(e)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Quantity"
+                />
+              </td>
+            ) : null}
             <td className="px-6 py-4">
               <div className="flex items-center gap-4">
                 {data?.itemBarcode ? (

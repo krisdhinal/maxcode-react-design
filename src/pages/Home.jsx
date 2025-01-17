@@ -19,6 +19,10 @@ function Home() {
     showBarcode: true,
     showDate: true,
     showDisplay: false,
+    showPriceDisplay: false,
+    showCodeDisplay: false,
+    showNameDisplay: false,
+    showDateDisplay: false,
     barcodeWidth: 2,
     barcodeHeight: 100,
     pageWidth: 10.3,
@@ -55,7 +59,9 @@ function Home() {
     try {
       const productData = await fetchProductDetails(query);
       if (productData?.data) {
-        setProduct(productData?.data);
+        let result = productData?.data;
+        result.quantity = 1;
+        setProduct(result);
       } else {
         toast.error("Data not found", { position: "top-right" });
       }
@@ -69,6 +75,12 @@ function Home() {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && query.length > 0) {
       handleSearch();
+    }
+  };
+
+  const handleQuantityChange = (e) => {
+    if (e?.target?.value > 0) {
+      setProduct((prev) => ({ ...prev, quantity: e?.target?.value }));
     }
   };
 
@@ -100,27 +112,33 @@ function Home() {
                 }`}
               >
                 {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <span className="loader-clock"></span>
-                  Loading...
-                </div>
-              ) : (
-                "Search"
-              )}
-            </button>
-          </div>
-          {isLoading && (
-            <div className="flex justify-center items-center mt-4">
-              <span className="loader-clock"></span>
+                  <div className="flex items-center gap-2">
+                    <span className="loader-clock"></span>
+                    Loading...
+                  </div>
+                ) : (
+                  "Search"
+                )}
+              </button>
             </div>
-          )}
+            {isLoading && (
+              <div className="flex justify-center items-center mt-4">
+                <span className="loader-clock"></span>
+              </div>
+            )}
             {product ? (
               <div className="border p-4 rounded shadow-md">
-                <DetailProduct data={product} />
+                <DetailProduct
+                  data={product}
+                  handleQuantityChange={handleQuantityChange}
+                />
 
                 {product?.itemBarcode ? (
                   <>
-                    <PrintSettings onSave={setPrintSettings} printSettings={printSettings} />
+                    <PrintSettings
+                      onSave={setPrintSettings}
+                      printSettings={printSettings}
+                    />
                     <PrintPreview
                       settings={printSettings}
                       handleChange={handleChange}

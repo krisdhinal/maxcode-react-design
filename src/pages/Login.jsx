@@ -7,11 +7,19 @@ function Login() {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     localStorage.setItem("accessToken", "9082c51b-43fa-4467-abe6-c4f094c024db");
     localStorage.setItem("session", "2410574e-e6c7-473a-bce6-c53729119525");
     localStorage.setItem(
       "token",
       "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmlzZGhpbmFsQGdtYWlsLmNvbSIsImlhdCI6MTczNjk1MjE0NiwiZXhwIjoxNzM3MDM4NTQ2fQ.P8s9nCayCm7mzO3aAt_u5MsGvWPKrn95U1jsRxO2TdtaLERkFf3UDmhfabKehqzEn4QQD-qKvEarkxLQv9tUrw"
+=======
+    localStorage.setItem("accessToken", "2df767d6-5c06-49d3-97d2-591e3399dd3b");
+    localStorage.setItem("session", "dd19962d-b489-405c-a643-a8dffa609f58");
+    localStorage.setItem(
+      "token",
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmlzZGhpbmFsQGdtYWlsLmNvbSIsImlhdCI6MTczNzEzOTUyNywiZXhwIjoxNzM3MjI1OTI3fQ.ZZ5WQATEZbVuZbGz9iu6lmuMiRcHcXQVKUlcXjgnhU3lDQRoupCyBfdfjF8H9mdbBUBBNlWCLiWMEIr1Gxsrfw"
+>>>>>>> 566949f4e12b829510355c4fe9f211554a23b1f0
     );
     toast.success("Anda berhasil login!", { position: "top-right" });
     navigate("/");

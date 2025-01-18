@@ -17,12 +17,20 @@ function PrintPreview(props) {
       text: data?.itemName,
       className: "text-xs font-bold",
       isShow: settings.showNameDisplay,
+	  style: {
+        fontSize: `${settings?.fontSize}px`,
+        lineHeight: `${settings?.fontSize}px`,
+      },
     },
     {
       id: 2,
       text: data?.itemBarcode,
       className: "text-xs font-bold",
       isShow: settings.showCodeDisplay,
+	  style: {
+        fontSize: `${settings?.fontSize}px`,
+        lineHeight: `${settings?.fontSize}px`,
+      },
     },
     {
       id: 3,
@@ -31,6 +39,7 @@ function PrintPreview(props) {
       isShow: settings.showPriceDisplay,
       style: {
         fontSize: `${settings?.fontPrice}px`,
+        lineHeight: `${settings?.fontPrice}px`,
       },
     },
     {
@@ -38,6 +47,10 @@ function PrintPreview(props) {
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDateDisplay,
+	  style: {
+        fontSize: `${settings?.fontSize}px`,
+        lineHeight: `${settings?.fontSize}px`,
+      },
     },
   ]);
   const [lists, setLists] = useState([
@@ -52,18 +65,30 @@ function PrintPreview(props) {
       ),
       className: "text-xs font-bold",
       isShow: settings.showBarcode,
+	  style: {
+        fontSize: `${settings?.fontSize}px`,
+        lineHeight: `${settings?.fontSize}px`,
+      },
     },
     {
       id: 2,
       text: data?.itemName,
       className: "text-xs font-bold",
       isShow: settings.showName,
+	  style: {
+        fontSize: `${settings?.fontSize}px`,
+        lineHeight: `${settings?.fontSize}px`,
+      },
     },
     {
       id: 3,
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDate,
+	  style: {
+        fontSize: `${settings?.fontSize}px`,
+        lineHeight: `${settings?.fontSize}px`,
+      },
     },
     {
       id: 4,
@@ -72,6 +97,7 @@ function PrintPreview(props) {
       isShow: settings.showPrice,
       style: {
         fontSize: `${settings?.fontPrice}px`,
+        lineHeight: `${settings?.fontPrice}px`,
       },
     },
   ]);
@@ -183,59 +209,25 @@ function PrintPreview(props) {
   );
   const printStyles = {
     fontSize: `${settings?.fontSize}px`,
-    marginTop: `${settings?.marginTop}px`,
-    marginBottom: `${settings?.marginBottom}px`,
-    marginLeft: `${settings?.marginLeft}px`,
-    marginRight: `${settings?.marginRight}px`,
+    marginTop: `${settings?.marginTop}mm`,
+    marginBottom: `${settings?.marginBottom}mm`,
+    marginLeft: `${settings?.marginLeft}mm`,
+    marginRight: `${settings?.marginRight}mm`,
     height: `${settings?.pageHeight - 0.5}cm`,
     width: `${settings?.pageWidth - 0.5}cm`,
   };
   const ref = useRef(null);
   const pageStyle = `
-  
-		
-		@media print {
+  @media print {
 		@page {
-    size: ${settings?.pageWidth}cm ${settings?.pageHeight}cm;
-        margin: 0px !important;
-  }
-		*{
-		font-size: ${settings?.fontSize}px;
+         size: ${settings?.pageWidth}cm ${settings?.pageHeight}cm;
+         margin: 0px !important;
+        }
+
+		.print-container{
+          border: none !important;    
 		}
-		.print-container {
-    page-break-inside: avoid;
-    page-break-before: auto;
-    page-break-after: always;
-	 display: block !important;
-		  border: none !important;
-  }
-
-  .print-container:first-child {
-    page-break-before: avoid; /* Pastikan halaman pertama dimulai langsung */
-  }
-
-		   div, p, img { page-break-inside: avoid !important; }
-		  .left{
-		  float: left;
-          page-break-inside: avoid !important;
-		  padding: 0px;
-		  width: fit-content;
-
-		  }
-		  .right{
-		  float: ${
-        settings?.printPerLine > 1 && settings?.showDisplay ? "right" : "left"
-      };
-          page-break-inside: avoid !important;
-		  padding: 0px;
-		  width: fit-content;
-
-		  }
-	body {
-    margin: 0;
-    padding: 0;
-  }
-}
+	}
 `;
   const quantity =
     parseInt(settings?.displayQuantity) > parseInt(settings?.printQuantity)
@@ -393,29 +385,26 @@ function PrintPreview(props) {
         </div>
       </div>
       <br />
-      <div
-        style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
-      >
+      <div style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}>
         <div ref={contentRef} className="parent-container">
           {quantity
             ? new Array(parseInt(quantity)).fill("").map((_, index) => (
                 <div
                   key={index}
-                  className={`border border-gray-500 border-dashed flex  justify-between print-container ${
+                  className={`border border-gray-500 border-dashed flex  justify-between print-container ${index !== 0 ? "not-first-elm":""} ${
                     settings?.printPerLine > 1
                       ? "flex-row items-center"
                       : "flex-col"
                   }`}
                   style={{
                     ...printStyles,
-                    pageBreakAfter: index === quantity - 1 ? "auto" : "always",
-                    pageBreakBefore: index === 0 ? "avoid" : "auto",
+                    breakAfter: "page",
                   }}
                 >
                   <style>{pageStyle}</style>
                   {settings.showDisplay &&
                   index <= settings?.displayQuantity - 1 ? (
-                    <div className="text-center w-1/2 left">
+                    <div className="text-center w-1/2 left relative z-[9999]">
                       <div>{cards.map((card, i) => renderCard(card, i))}</div>
                     </div>
                   ) : null}

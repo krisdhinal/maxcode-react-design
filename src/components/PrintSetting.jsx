@@ -101,7 +101,7 @@ const PrintSettings = ({ onSave, printSettings }) => {
             </div>
 
             <div className="flex items-center">
-              <label className="w-1/2">Margin Top</label>
+              <label className="w-1/2">Margin Top (mm)</label>
               <input
                 type="number"
                 name="marginTop"
@@ -111,7 +111,7 @@ const PrintSettings = ({ onSave, printSettings }) => {
               />
             </div>
             <div className="flex items-center">
-              <label className="w-1/2">Margin Bottom</label>
+              <label className="w-1/2">Margin Bottom (mm)</label>
               <input
                 type="number"
                 name="marginBottom"
@@ -121,7 +121,7 @@ const PrintSettings = ({ onSave, printSettings }) => {
               />
             </div>
             <div className="flex items-center">
-              <label className="w-1/2">Margin Left</label>
+              <label className="w-1/2">Margin Left (mm)</label>
               <input
                 type="number"
                 name="marginLeft"
@@ -131,7 +131,7 @@ const PrintSettings = ({ onSave, printSettings }) => {
               />
             </div>
             <div className="flex items-center">
-              <label className="w-1/2">Margin Right</label>
+              <label className="w-1/2">Margin Right (mm)</label>
               <input
                 type="number"
                 name="marginRight"

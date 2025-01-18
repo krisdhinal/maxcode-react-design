@@ -8,7 +8,7 @@ import { useReactToPrint } from "react-to-print";
 import RenderBarcode from "./RenderBarcode";
 
 function PrintPreview(props) {
-  const { settings, handleChange, data } = props;
+  const { settings, handleChange, data, handleQuantityChange } = props;
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
   const [cards, setCards] = useState([
@@ -237,13 +237,18 @@ function PrintPreview(props) {
   }
 }
 `;
+  const quantity =
+    parseInt(settings?.displayQuantity) > parseInt(settings?.printQuantity)
+      ? parseInt(settings?.displayQuantity)
+      : parseInt(settings?.printQuantity);
   return (
     <div className="py-4 mt-4" ref={ref}>
       <h3 className="text-lg text-gray-700 font-semibold mb-2">
         Print Preview
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        <div className="flex flex-col gap-2">
+          <p className="font-semibold">Display Setting</p>
           <div>
             <label>
               <input
@@ -252,7 +257,7 @@ function PrintPreview(props) {
                 checked={settings.showDisplay}
                 onChange={handleChange}
               />
-              <span className="ml-2">Show Data Display</span>
+              <span className="ml-2 font-[500]">Show Data Display</span>
             </label>
           </div>
           {settings?.showDisplay ? (
@@ -265,7 +270,7 @@ function PrintPreview(props) {
                     checked={settings.showNameDisplay}
                     onChange={handleChange}
                   />
-                  <span className="ml-2">Show Name Display</span>
+                  <span className="ml-2 font-[500]">Show Name Display</span>
                 </label>
               </div>
               <div>
@@ -276,7 +281,7 @@ function PrintPreview(props) {
                     checked={settings.showPriceDisplay}
                     onChange={handleChange}
                   />
-                  <span className="ml-2">Show Price Display</span>
+                  <span className="ml-2 font-[500]">Show Price Display</span>
                 </label>
               </div>
               <div>
@@ -287,7 +292,7 @@ function PrintPreview(props) {
                     checked={settings.showCodeDisplay}
                     onChange={handleChange}
                   />
-                  <span className="ml-2">Show Code Display</span>
+                  <span className="ml-2 font-[500]">Show Code Display</span>
                 </label>
               </div>
               <div>
@@ -298,13 +303,26 @@ function PrintPreview(props) {
                     checked={settings.showDateDisplay}
                     onChange={handleChange}
                   />
-                  <span className="ml-2">Show Date Display</span>
+                  <span className="ml-2 font-[500]">Show Date Display</span>
                 </label>
+              </div>
+              <div>
+                <label className="font-[500]">Print Display Quantity</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={settings.displayQuantity}
+                  onChange={(e) => handleQuantityChange(e)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[27%] p-2.5"
+                  placeholder="Print Quantity"
+                  name="displayQuantity"
+                />
               </div>
             </>
           ) : null}
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
+          <p className="font-semibold">Barcode Attributes</p>
           <div>
             <label>
               <input
@@ -313,7 +331,7 @@ function PrintPreview(props) {
                 checked={settings.showName}
                 onChange={handleChange}
               />
-              <span className="ml-2">Show Name</span>
+              <span className="ml-2 font-[500]">Show Name</span>
             </label>
           </div>
           <div>
@@ -324,7 +342,7 @@ function PrintPreview(props) {
                 checked={settings.showPrice}
                 onChange={handleChange}
               />
-              <span className="ml-2">Show Price</span>
+              <span className="ml-2 font-[500]">Show Price</span>
             </label>
           </div>
           <div>
@@ -335,7 +353,7 @@ function PrintPreview(props) {
                 checked={settings.showCode}
                 onChange={handleChange}
               />
-              <span className="ml-2">Show Code</span>
+              <span className="ml-2 font-[500]">Show Code</span>
             </label>
           </div>
           <div>
@@ -346,7 +364,7 @@ function PrintPreview(props) {
                 checked={settings.showDate}
                 onChange={handleChange}
               />
-              <span className="ml-2">Show Date</span>
+              <span className="ml-2 font-[500]">Show Date</span>
             </label>
           </div>
           <div>
@@ -357,19 +375,30 @@ function PrintPreview(props) {
                 checked={settings.showBarcode}
                 onChange={handleChange}
               />
-              <span className="ml-2">Show Barcode</span>
+              <span className="ml-2 font-[500]">Show Barcode</span>
             </label>
+          </div>
+          <div>
+            <label className="font-[500]">Print Quantity</label>
+            <input
+              type="number"
+              min={1}
+              value={settings?.printQuantity}
+              name="printQuantity"
+              onChange={(e) => handleQuantityChange(e)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[27%] p-2.5"
+              placeholder="Print Quantity"
+            />
           </div>
         </div>
       </div>
       <br />
       <div
-        className="overflow-auto"
         style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
       >
         <div ref={contentRef} className="parent-container">
-          {data?.quantity
-            ? new Array(parseInt(data?.quantity)).fill("").map((_, index) => (
+          {quantity
+            ? new Array(parseInt(quantity)).fill("").map((_, index) => (
                 <div
                   key={index}
                   className={`border border-gray-500 border-dashed flex  justify-between print-container ${
@@ -379,22 +408,24 @@ function PrintPreview(props) {
                   }`}
                   style={{
                     ...printStyles,
-                    pageBreakAfter:
-                      index === data.quantity - 1 ? "auto" : "always",
+                    pageBreakAfter: index === quantity - 1 ? "auto" : "always",
                     pageBreakBefore: index === 0 ? "avoid" : "auto",
                   }}
                 >
                   <style>{pageStyle}</style>
-                  {settings.showDisplay ? (
+                  {settings.showDisplay &&
+                  index <= settings?.displayQuantity - 1 ? (
                     <div className="text-center w-1/2 left">
                       <div>{cards.map((card, i) => renderCard(card, i))}</div>
                     </div>
                   ) : null}
-                  <div className="text-center w-1/2 right">
-                    <div className="flex flex-col items-center">
-                      {lists.map((card, i) => renderList(card, i))}
+                  {index <= settings?.printQuantity - 1 ? (
+                    <div className="text-center w-1/2 right">
+                      <div className="flex flex-col items-center">
+                        {lists.map((card, i) => renderList(card, i))}
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
                 </div>
               ))
             : null}

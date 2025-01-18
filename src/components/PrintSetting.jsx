@@ -36,166 +36,146 @@ const PrintSettings = ({ onSave, printSettings }) => {
       title="Print Settings"
       content={
         <div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label>
-                Barcode Width Per Bar:
-                <input
-                  type="number"
-                  name="barcodeWidth"
-                  value={settings.barcodeWidth}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center">
+              <label className="w-1/2">Barcode Width Per Bar</label>
+              <input
+                type="number"
+                name="barcodeWidth"
+                value={settings.barcodeWidth}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Barcode Height:
-                <input
-                  type="number"
-                  name="barcodeHeight"
-                  value={settings.barcodeHeight}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Page Width (cm):
-                <input
-                  type="number"
-                  name="pageWidth"
-                  value={settings.pageWidth}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Page Height (cm):
-                <input
-                  type="number"
-                  name="pageHeight"
-                  value={settings.pageHeight}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Barcode Height</label>
+              <input
+                type="number"
+                name="barcodeHeight"
+                value={settings.barcodeHeight}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
 
-            {/* Font */}
-            <div>
-              <label>
-                Font Size:
-                <input
-                  type="number"
-                  name="fontSize"
-                  value={settings.fontSize}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Page Width (cm)</label>
+              <input
+                type="number"
+                name="pageWidth"
+                value={settings.pageWidth}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Font Price Size:
-                <input
-                  type="number"
-                  name="fontPrice"
-                  value={settings.fontPrice}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Page Height (cm)</label>
+              <input
+                type="number"
+                name="pageHeight"
+                value={settings.pageHeight}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
 
-            {/* Margin */}
-            <div>
-              <label>
-                Margin Top:
-                <input
-                  type="number"
-                  name="marginTop"
-                  value={settings.marginTop}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Font Size</label>
+              <input
+                type="number"
+                name="fontSize"
+                value={settings.fontSize}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Margin Bottom:
-                <input
-                  type="number"
-                  name="marginBottom"
-                  value={settings.marginBottom}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Font Price Size</label>
+              <input
+                type="number"
+                name="fontPrice"
+                value={settings.fontPrice}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Margin Left:
-                <input
-                  type="number"
-                  name="marginLeft"
-                  value={settings.marginLeft}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+
+            <div className="flex items-center">
+              <label className="w-1/2">Margin Top</label>
+              <input
+                type="number"
+                name="marginTop"
+                value={settings.marginTop}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Margin Right:
-                <input
-                  type="number"
-                  name="marginRight"
-                  value={settings.marginRight}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Margin Bottom</label>
+              <input
+                type="number"
+                name="marginBottom"
+                value={settings.marginBottom}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Barcode Type:
-                <select
-                  name="barcodeType"
-                  value={settings.barcodeType}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                >
-                  <option value="CODE128">CODE128</option>
-                  <option value="EAN13">EAN13</option>
-                  <option value="UPC">UPC</option>
-                  <option value="QR">QR CODE</option>
-                </select>
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Margin Left</label>
+              <input
+                type="number"
+                name="marginLeft"
+                value={settings.marginLeft}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
-            <div>
-              <label>
-                Print Per Line:
-                <input
-                  type="number"
-                  name="printPerLine"
-                  value={settings.printPerLine}
-                  onChange={handleChange}
-                  className="ml-2 border p-1 rounded"
-                />
-              </label>
+            <div className="flex items-center">
+              <label className="w-1/2">Margin Right</label>
+              <input
+                type="number"
+                name="marginRight"
+                value={settings.marginRight}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
+            </div>
+
+            <div className="flex items-center">
+              <label className="w-1/2">Barcode Type</label>
+              <select
+                name="barcodeType"
+                value={settings.barcodeType}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              >
+                <option value="CODE128">CODE128</option>
+                <option value="EAN13">EAN13</option>
+                <option value="UPC">UPC</option>
+                <option value="QR">QR CODE</option>
+              </select>
+            </div>
+
+            <div className="flex items-center">
+              <label className="w-1/2">Print Per Line</label>
+              <input
+                type="number"
+                name="printPerLine"
+                value={settings.printPerLine}
+                onChange={handleChange}
+                className="w-1/2 border p-2 rounded"
+              />
             </div>
           </div>
-          <button
-            onClick={handleSave}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Save Settings
-          </button>
+
+          <div className="text-right mt-4">
+            <button
+              onClick={handleSave}
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            >
+              Save Settings
+            </button>
+          </div>
         </div>
       }
     />

@@ -19,15 +19,15 @@ function Home() {
     showBarcode: true,
     showDate: true,
     showDisplay: false,
-    showPriceDisplay: false,
-    showCodeDisplay: false,
-    showNameDisplay: false,
-    showDateDisplay: false,
+    showPriceDisplay: true,
+    showCodeDisplay: true,
+    showNameDisplay: true,
+    showDateDisplay: true,
     barcodeWidth: 2,
-    barcodeHeight: 100,
-    pageWidth: 10.3,
-    pageHeight: 2.3,
-    fontSize: 14,
+    barcodeHeight: 60,
+    pageWidth: 15,
+    pageHeight: 5,
+    fontSize: 16,
     fontPrice: 16,
     marginTop: 10,
     marginBottom: 10,
@@ -35,6 +35,8 @@ function Home() {
     marginRight: 10,
     barcodeType: "CODE128",
     printPerLine: 2,
+    displayQuantity: 1,
+    printQuantity: 1,
   };
   const [printSettings, setPrintSettings] = useState(initStatePrint);
   useEffect(() => {
@@ -59,8 +61,7 @@ function Home() {
     try {
       const productData = await fetchProductDetails(query);
       if (productData?.data) {
-        let result = productData?.data;
-        result.quantity = 1;
+        const result = productData?.data;
         setProduct(result);
       } else {
         toast.error("Data not found", { position: "top-right" });
@@ -80,7 +81,12 @@ function Home() {
 
   const handleQuantityChange = (e) => {
     if (e?.target?.value > 0) {
-      setProduct((prev) => ({ ...prev, quantity: e?.target?.value }));
+      const newPrintSettings = {
+        ...printSettings,
+        [e?.target?.name]: e?.target?.value,
+      };
+      setPrintSettings(newPrintSettings);
+      localStorage.setItem("printSettings", JSON.stringify(newPrintSettings));
     }
   };
 
@@ -128,10 +134,7 @@ function Home() {
             )}
             {product ? (
               <div className="border p-4 rounded shadow-md">
-                <DetailProduct
-                  data={product}
-                  handleQuantityChange={handleQuantityChange}
-                />
+                <DetailProduct data={product} />
 
                 {product?.itemBarcode ? (
                   <>
@@ -143,6 +146,7 @@ function Home() {
                       settings={printSettings}
                       handleChange={handleChange}
                       data={product}
+                      handleQuantityChange={handleQuantityChange}
                     />
                   </>
                 ) : null}

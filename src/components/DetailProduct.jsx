@@ -8,6 +8,9 @@ function DetailProduct(props) {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
+            <th scope="col" className="px-6 py-3 max-w-[100px]">
+              Product Code
+            </th>
             <th scope="col" className="px-6 py-3 max-w-[200px]">
               Product name
             </th>
@@ -23,9 +26,14 @@ function DetailProduct(props) {
           <tr className="bg-white border-b">
             <th
               scope="row"
+              className="px-6 py-4 font-medium text-gray-900 max-w-[100px]"
+            >
+              {data?.itemNumber ?? "-"}
+            </th>
+            <th
+              scope="row"
               className="px-6 py-4 font-medium text-gray-900 max-w-[200px]"
             >
-              {data?.itemNumber ? `(${data?.itemNumber})` : null}{" "}
               {data?.itemName}
             </th>
             <td className="px-6 py-4">{formatRupiah(data?.itemPrice)}</td>

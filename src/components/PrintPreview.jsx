@@ -17,7 +17,7 @@ function PrintPreview(props) {
       text: data?.itemName,
       className: "text-xs font-bold",
       isShow: settings.showNameDisplay,
-	  style: {
+      style: {
         fontSize: `${settings?.fontSize}px`,
         lineHeight: `${settings?.fontSize}px`,
       },
@@ -27,7 +27,7 @@ function PrintPreview(props) {
       text: data?.itemBarcode,
       className: "text-xs font-bold",
       isShow: settings.showCodeDisplay,
-	  style: {
+      style: {
         fontSize: `${settings?.fontSize}px`,
         lineHeight: `${settings?.fontSize}px`,
       },
@@ -47,7 +47,7 @@ function PrintPreview(props) {
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDateDisplay,
-	  style: {
+      style: {
         fontSize: `${settings?.fontSize}px`,
         lineHeight: `${settings?.fontSize}px`,
       },
@@ -65,7 +65,7 @@ function PrintPreview(props) {
       ),
       className: "text-xs font-bold",
       isShow: settings.showBarcode,
-	  style: {
+      style: {
         fontSize: `${settings?.fontSize}px`,
         lineHeight: `${settings?.fontSize}px`,
       },
@@ -75,7 +75,7 @@ function PrintPreview(props) {
       text: data?.itemName,
       className: "text-xs font-bold",
       isShow: settings.showName,
-	  style: {
+      style: {
         fontSize: `${settings?.fontSize}px`,
         lineHeight: `${settings?.fontSize}px`,
       },
@@ -85,7 +85,7 @@ function PrintPreview(props) {
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDate,
-	  style: {
+      style: {
         fontSize: `${settings?.fontSize}px`,
         lineHeight: `${settings?.fontSize}px`,
       },
@@ -391,7 +391,9 @@ function PrintPreview(props) {
             ? new Array(parseInt(quantity)).fill("").map((_, index) => (
                 <div
                   key={index}
-                  className={`border border-gray-500 border-dashed flex  justify-between print-container ${index !== 0 ? "not-first-elm":""} ${
+                  className={`border border-gray-500 border-dashed flex  justify-between print-container ${
+                    index !== 0 ? "not-first-elm" : ""
+                  } ${
                     settings?.printPerLine > 1
                       ? "flex-row items-center"
                       : "flex-col"
@@ -409,7 +411,13 @@ function PrintPreview(props) {
                     </div>
                   ) : null}
                   {index <= settings?.printQuantity - 1 ? (
-                    <div className="text-center w-1/2 right">
+                    <div
+                      className={`text-center ${
+                        (settings.showDisplay && index <= settings?.displayQuantity - 1)
+                          ? "w-1/2"
+                          : "w-full"
+                      } right`}
+                    >
                       <div className="flex flex-col items-center">
                         {lists.map((card, i) => renderList(card, i))}
                       </div>

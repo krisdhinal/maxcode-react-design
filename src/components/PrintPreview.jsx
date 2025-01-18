@@ -230,9 +230,9 @@ function PrintPreview(props) {
 	}
 `;
   const quantity =
-    parseInt(settings?.displayQuantity) > parseInt(settings?.printQuantity)
-      ? parseInt(settings?.displayQuantity)
-      : parseInt(settings?.printQuantity);
+    parseInt(settings?.displayQuantity) > (parseInt(settings?.printQuantity) || 0)
+      ? (parseInt(settings?.displayQuantity) || 0)
+      : (parseInt(settings?.printQuantity) || 0);
   return (
     <div className="py-4 mt-4" ref={ref}>
       <h3 className="text-lg text-gray-700 font-semibold mb-2">

@@ -80,7 +80,7 @@ function Home() {
   };
 
   const handleQuantityChange = (e) => {
-    if (e?.target?.value > 0) {
+    if (e?.target?.value > 0 || e?.target?.value === "") {
       const newPrintSettings = {
         ...printSettings,
         [e?.target?.name]: e?.target?.value,

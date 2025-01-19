@@ -249,10 +249,10 @@ function PrintPreview(props) {
   }
   return (
     <Accordion
-      title="Print Settings"
+      title="Print Preview"
       defaultOpen
       content={
-        <div className="py-4 mt-4" ref={ref}>
+        <div ref={ref}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <p className="font-semibold">Display Setting</p>

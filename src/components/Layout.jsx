@@ -208,7 +208,7 @@ const Layout = ({ children, title }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-white">
         {/* Navbar */}
-        <nav className="bg-gray-800 text-black p-4 bg-white relative z-[9999]">
+        <nav className="bg-gray-800 text-black p-4 bg-white relative">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               {/* Mobile menu button */}
@@ -261,7 +261,7 @@ const Layout = ({ children, title }) => {
               </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 bg-white text-gray-800 shadow-lg rounded-md w-48">
+                <div className="absolute right-0 mt-2 bg-white text-gray-800 shadow-lg rounded-md w-48 z-[99999]">
                   <ul className="py-2">
                     <li>
                       <button
@@ -280,7 +280,7 @@ const Layout = ({ children, title }) => {
 
         {/* Content */}
         <div className="flex-1 overflow-auto">
-            <nav className="bg-gray-100 p-4 relative z-[9999]">
+            <nav className="bg-gray-100 p-4 relative">
               <ol className="flex space-x-2 text-sm">
                 <li>
                   <Link to="/" className="text-blue-600 hover:underline">

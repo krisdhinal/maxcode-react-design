@@ -3,9 +3,10 @@ import update from "immutability-helper";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { formatRupiah } from "../utils/FormattedPrice";
 import moment from "moment";
-import { Card } from "./CardDrag";
+import Card  from "./CardDrag";
 import { useReactToPrint } from "react-to-print";
 import RenderBarcode from "./RenderBarcode";
+import Accordion from "./Accordion";
 
 function PrintPreview(props) {
   const { settings, handleChange, data, handleQuantityChange } = props;
@@ -229,166 +230,191 @@ function PrintPreview(props) {
 		}
 	}
 `;
-  const quantity =
-    parseInt(settings?.displayQuantity) > (parseInt(settings?.printQuantity) || 0)
-      ? (parseInt(settings?.displayQuantity) || 0)
-      : (parseInt(settings?.printQuantity) || 0);
+
+  const renderDisplay = () => {
+    return <div className="flex flex-col items-center">{cards.map((card, i) => renderCard(card, i))}</div>;
+  };
+  const renderPrintCode = () => {
+    return <div className="flex flex-col items-center">{lists.map((list, i) => renderList(list, i))}</div>;
+  };
+  const items = [
+    ...Array(
+      parseInt((settings.showDisplay && settings?.displayQuantity) || 0)
+    ).fill(renderDisplay()),
+    ...Array(parseInt(settings?.printQuantity)).fill(renderPrintCode()),
+  ];
+  const groupedLines = [];
+  for (let i = 0; i < items.length; i += parseInt(settings?.printPerLine)) {
+    groupedLines.push(items.slice(i, i + parseInt(settings?.printPerLine)));
+  }
   return (
-    <div className="py-4 mt-4" ref={ref}>
-      <h3 className="text-lg text-gray-700 font-semibold mb-2">
-        Print Preview
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
-          <p className="font-semibold">Display Setting</p>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="showDisplay"
-                checked={settings.showDisplay}
-                onChange={handleChange}
-              />
-              <span className="ml-2 font-[500]">Show Data Display</span>
-            </label>
-          </div>
-          {settings?.showDisplay ? (
-            <>
+    <Accordion
+      title="Print Settings"
+      defaultOpen
+      content={
+        <div className="py-4 mt-4" ref={ref}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <p className="font-semibold">Display Setting</p>
               <div>
                 <label>
                   <input
                     type="checkbox"
-                    name="showNameDisplay"
-                    checked={settings.showNameDisplay}
+                    name="showDisplay"
+                    checked={settings.showDisplay}
                     onChange={handleChange}
                   />
-                  <span className="ml-2 font-[500]">Show Name Display</span>
+                  <span className="ml-2 font-[500]">Show Data Display</span>
+                </label>
+              </div>
+              {settings?.showDisplay ? (
+                <>
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="showNameDisplay"
+                        checked={settings.showNameDisplay}
+                        onChange={handleChange}
+                      />
+                      <span className="ml-2 font-[500]">Show Name Display</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="showPriceDisplay"
+                        checked={settings.showPriceDisplay}
+                        onChange={handleChange}
+                      />
+                      <span className="ml-2 font-[500]">
+                        Show Price Display
+                      </span>
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="showCodeDisplay"
+                        checked={settings.showCodeDisplay}
+                        onChange={handleChange}
+                      />
+                      <span className="ml-2 font-[500]">Show Code Display</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="showDateDisplay"
+                        checked={settings.showDateDisplay}
+                        onChange={handleChange}
+                      />
+                      <span className="ml-2 font-[500]">Show Date Display</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label className="font-[500]">Print Display Quantity</label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={settings.displayQuantity}
+                      onChange={(e) => handleQuantityChange(e)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[27%] p-2.5"
+                      placeholder="Print Quantity"
+                      name="displayQuantity"
+                    />
+                  </div>
+                </>
+              ) : null}
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="font-semibold">Barcode Attributes</p>
+              <div>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="showName"
+                    checked={settings.showName}
+                    onChange={handleChange}
+                  />
+                  <span className="ml-2 font-[500]">Show Name</span>
                 </label>
               </div>
               <div>
                 <label>
                   <input
                     type="checkbox"
-                    name="showPriceDisplay"
-                    checked={settings.showPriceDisplay}
+                    name="showPrice"
+                    checked={settings.showPrice}
                     onChange={handleChange}
                   />
-                  <span className="ml-2 font-[500]">Show Price Display</span>
+                  <span className="ml-2 font-[500]">Show Price</span>
                 </label>
               </div>
               <div>
                 <label>
                   <input
                     type="checkbox"
-                    name="showCodeDisplay"
-                    checked={settings.showCodeDisplay}
+                    name="showCode"
+                    checked={settings.showCode}
                     onChange={handleChange}
                   />
-                  <span className="ml-2 font-[500]">Show Code Display</span>
+                  <span className="ml-2 font-[500]">Show Code</span>
                 </label>
               </div>
               <div>
                 <label>
                   <input
                     type="checkbox"
-                    name="showDateDisplay"
-                    checked={settings.showDateDisplay}
+                    name="showDate"
+                    checked={settings.showDate}
                     onChange={handleChange}
                   />
-                  <span className="ml-2 font-[500]">Show Date Display</span>
+                  <span className="ml-2 font-[500]">Show Date</span>
                 </label>
               </div>
               <div>
-                <label className="font-[500]">Print Display Quantity</label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="showBarcode"
+                    checked={settings.showBarcode}
+                    onChange={handleChange}
+                  />
+                  <span className="ml-2 font-[500]">Show Barcode</span>
+                </label>
+              </div>
+              <div>
+                <label className="font-[500]">Print Quantity</label>
                 <input
                   type="number"
                   min={1}
-                  value={settings.displayQuantity}
+                  value={settings?.printQuantity}
+                  name="printQuantity"
                   onChange={(e) => handleQuantityChange(e)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[27%] p-2.5"
                   placeholder="Print Quantity"
-                  name="displayQuantity"
                 />
               </div>
-            </>
-          ) : null}
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="font-semibold">Barcode Attributes</p>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="showName"
-                checked={settings.showName}
-                onChange={handleChange}
-              />
-              <span className="ml-2 font-[500]">Show Name</span>
-            </label>
+            </div>
           </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="showPrice"
-                checked={settings.showPrice}
-                onChange={handleChange}
-              />
-              <span className="ml-2 font-[500]">Show Price</span>
-            </label>
+          <div className="flex justify-end">
+            <button
+              onClick={() => reactToPrintFn()}
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            >
+              Print
+            </button>
           </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="showCode"
-                checked={settings.showCode}
-                onChange={handleChange}
-              />
-              <span className="ml-2 font-[500]">Show Code</span>
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="showDate"
-                checked={settings.showDate}
-                onChange={handleChange}
-              />
-              <span className="ml-2 font-[500]">Show Date</span>
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="showBarcode"
-                checked={settings.showBarcode}
-                onChange={handleChange}
-              />
-              <span className="ml-2 font-[500]">Show Barcode</span>
-            </label>
-          </div>
-          <div>
-            <label className="font-[500]">Print Quantity</label>
-            <input
-              type="number"
-              min={1}
-              value={settings?.printQuantity}
-              name="printQuantity"
-              onChange={(e) => handleQuantityChange(e)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[27%] p-2.5"
-              placeholder="Print Quantity"
-            />
-          </div>
-        </div>
-      </div>
-      <br />
-      <div style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}>
-        <div ref={contentRef} className="parent-container">
-          {quantity
-            ? new Array(parseInt(quantity)).fill("").map((_, index) => (
+          <br />
+          <div
+            style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
+          >
+            <div ref={contentRef} className="parent-container">
+              {groupedLines.map((line, index) => (
                 <div
                   key={index}
                   className={`border border-gray-500 border-dashed flex  justify-between print-container ${
@@ -396,7 +422,7 @@ function PrintPreview(props) {
                   } ${
                     settings?.printPerLine > 1
                       ? "flex-row items-center"
-                      : "flex-col"
+                      : "flex-col items-center"
                   }`}
                   style={{
                     ...printStyles,
@@ -404,40 +430,24 @@ function PrintPreview(props) {
                   }}
                 >
                   <style>{pageStyle}</style>
-                  {settings.showDisplay &&
-                  index <= settings?.displayQuantity - 1 ? (
-                    <div className="text-center w-1/2 left relative z-[9999]">
-                      <div>{cards.map((card, i) => renderCard(card, i))}</div>
-                    </div>
-                  ) : null}
-                  {index <= settings?.printQuantity - 1 ? (
+                  {line.map((item, idx) => (
                     <div
-                      className={`text-center ${
-                        (settings.showDisplay && index <= settings?.displayQuantity - 1)
-                          ? "w-1/2"
-                          : "w-full"
-                      } right`}
+                      className="text-center left relative z-[999]"
+                      style={{
+                        width: `${100 / (settings?.printPerLine || 1)}%`,
+                      }}
+                      key={idx}
                     >
-                      <div className="flex flex-col items-center">
-                        {lists.map((card, i) => renderList(card, i))}
-                      </div>
+                      {item}
                     </div>
-                  ) : null}
+                  ))}
                 </div>
-              ))
-            : null}
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-      <div>
-        <br />
-        <button
-          onClick={() => reactToPrintFn()}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Print
-        </button>
-      </div>
-    </div>
+      }
+    />
   );
 }
 

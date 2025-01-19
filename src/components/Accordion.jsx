@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-const Accordion = ({ title, content }) => {
-  const [open, setOpen] = useState(false);
+const Accordion = ({ title, content, defaultOpen }) => {
+  const [open, setOpen] = useState(defaultOpen || false);
 
   const toggleAccordion = () => {
     setOpen(!open);
@@ -25,7 +25,7 @@ const Accordion = ({ title, content }) => {
         </button>
         <div
           className={`overflow-hidden transition-all duration-200 ${
-            open ? "max-h-screen" : "max-h-0"
+            open ? "max-h-[fit-content]" : "max-h-0"
           }`}
         >
           <div className="px-4 py-3">{content}</div>

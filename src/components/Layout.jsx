@@ -208,7 +208,7 @@ const Layout = ({ children, title }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-white">
         {/* Navbar */}
-        <nav className="bg-gray-800 text-black p-4 bg-white">
+        <nav className="bg-gray-800 text-black p-4 bg-white relative z-[9999]">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               {/* Mobile menu button */}
@@ -280,7 +280,7 @@ const Layout = ({ children, title }) => {
 
         {/* Content */}
         <div className="flex-1 overflow-auto">
-            <nav className="bg-gray-100 p-4">
+            <nav className="bg-gray-100 p-4 relative z-[9999]">
               <ol className="flex space-x-2 text-sm">
                 <li>
                   <Link to="/" className="text-blue-600 hover:underline">

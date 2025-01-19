@@ -5,7 +5,7 @@ const ItemTypes = {
   CARD: "card",
 };
 
-export const Card = ({ id, text, index, moveCard, className, style }) => {
+const Card = ({ id, text, index, moveCard, className, style }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
     accept: ItemTypes.CARD,
@@ -71,3 +71,4 @@ export const Card = ({ id, text, index, moveCard, className, style }) => {
     </div>
   );
 };
+export default Card

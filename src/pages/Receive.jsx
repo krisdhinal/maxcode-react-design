@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import PrintSettings from "../components/PrintSetting";
-import { fetchProductDetails } from "../services/api";
+import { fetchReceives } from "../services/api";
 import { toast } from "react-toastify";
-import DetailProduct from "../components/DetailProduct";
-import PrintPreview from "../components/PrintPreview";
+import TableReceive from "../components/TableReceive";
+import PrintReceive from "../components/PrintReceive";
 
-function Home() {
+function Receive() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [product, setProduct] = useState(null);
   const initStatePrint = JSON.parse(localStorage.getItem("printSettings")) || {
     showName: true,
     showPrice: true,
@@ -37,6 +36,7 @@ function Home() {
     printQuantity: 1,
   };
   const [printSettings, setPrintSettings] = useState(initStatePrint);
+  const [receives, setReceives] = useState([]);
   useEffect(() => {
     const savedSettings = JSON.parse(localStorage.getItem("printSettings"));
     if (savedSettings) {
@@ -57,10 +57,10 @@ function Home() {
   const handleSearch = async () => {
     setIsLoading(true);
     try {
-      const productData = await fetchProductDetails(query);
-      if (productData?.data) {
-        const result = productData?.data;
-        setProduct(result);
+      const receive = await fetchReceives(query);
+      if (receive?.data) {
+        const result = receive?.data?.map((i)=>({...i, printQty: 1}));
+        setReceives(result);
       } else {
         toast.error("Data not found", { position: "top-right" });
       }
@@ -77,27 +77,16 @@ function Home() {
     }
   };
 
-  const handleQuantityChange = (e) => {
-    if (e?.target?.value > 0 || e?.target?.value === "") {
-      const newPrintSettings = {
-        ...printSettings,
-        [e?.target?.name]: e?.target?.value,
-      };
-      setPrintSettings(newPrintSettings);
-      localStorage.setItem("printSettings", JSON.stringify(newPrintSettings));
-    }
-  };
-
   return (
     <Layout>
       <div className="w-full bg-white p-6 h-fit rounded-lg shadow-md">
         <div className="p-8">
-          <h1 className="text-2xl font-bold mb-4">Search Product</h1>
+          <h1 className="text-2xl font-bold mb-4">Search Receive</h1>
           <div className="flex gap-2 mb-4">
             <input
               type="text"
               className="border border-gray-300 p-2 rounded w-full"
-              placeholder="Enter Product Name or SKU"
+              placeholder="Enter Transaction Number"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -126,24 +115,18 @@ function Home() {
               <span className="loader-clock"></span>
             </div>
           )}
-          {product ? (
+          {receives?.length > 0 ? (
             <div className="border p-4 rounded shadow-md">
-              <DetailProduct data={product} />
-
-              {product?.itemBarcode ? (
-                <>
-                  <PrintSettings
-                    onSave={setPrintSettings}
-                    printSettings={printSettings}
-                  />
-                  <PrintPreview
-                    settings={printSettings}
-                    handleChange={handleChange}
-                    data={product}
-                    handleQuantityChange={handleQuantityChange}
-                  />
-                </>
-              ) : null}
+              <TableReceive datas={receives} setDatas={setReceives} />
+              <PrintSettings
+                onSave={setPrintSettings}
+                printSettings={printSettings}
+              />
+              <PrintReceive
+                settings={printSettings}
+                handleChange={handleChange}
+				data={receives}
+              />
             </div>
           ) : null}
         </div>
@@ -152,4 +135,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Receive;

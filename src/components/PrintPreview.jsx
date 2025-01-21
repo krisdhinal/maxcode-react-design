@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import update from "immutability-helper";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { formatRupiah } from "../utils/FormattedPrice";
 import moment from "moment";
-import Card  from "./CardDrag";
 import { useReactToPrint } from "react-to-print";
 import RenderBarcode from "./RenderBarcode";
 import Accordion from "./Accordion";
+import RenderList from "./RenderList";
+import { getStyles } from "../utils/getStyles";
 
 function PrintPreview(props) {
   const { settings, handleChange, data, handleQuantityChange } = props;
@@ -18,40 +18,28 @@ function PrintPreview(props) {
       text: data?.itemName,
       className: "text-xs font-bold",
       isShow: settings.showNameDisplay,
-      style: {
-        fontSize: `${settings?.fontSize}px`,
-        lineHeight: `${settings?.fontSize}px`,
-      },
+      style: getStyles(settings?.fontSize, settings?.fontSize),
     },
     {
       id: 2,
       text: data?.itemBarcode,
       className: "text-xs font-bold",
       isShow: settings.showCodeDisplay,
-      style: {
-        fontSize: `${settings?.fontSize}px`,
-        lineHeight: `${settings?.fontSize}px`,
-      },
+      style: getStyles(settings?.fontSize, settings?.fontSize),
     },
     {
       id: 3,
       text: formatRupiah(data?.itemPrice),
       className: `text-xl font-bold`,
       isShow: settings.showPriceDisplay,
-      style: {
-        fontSize: `${settings?.fontPrice}px`,
-        lineHeight: `${settings?.fontPrice}px`,
-      },
+      style: getStyles(settings?.fontPrice, settings?.fontPrice),
     },
     {
       id: 4,
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDateDisplay,
-      style: {
-        fontSize: `${settings?.fontSize}px`,
-        lineHeight: `${settings?.fontSize}px`,
-      },
+      style: getStyles(settings?.fontSize, settings?.fontSize),
     },
   ]);
   const [lists, setLists] = useState([
@@ -66,58 +54,45 @@ function PrintPreview(props) {
       ),
       className: "text-xs font-bold",
       isShow: settings.showBarcode,
-      style: {
-        fontSize: `${settings?.fontSize}px`,
-        lineHeight: `${settings?.fontSize}px`,
-      },
+      style: getStyles(settings?.fontSize, settings?.fontSize),
     },
     {
       id: 2,
       text: data?.itemName,
       className: "text-xs font-bold",
       isShow: settings.showName,
-      style: {
-        fontSize: `${settings?.fontSize}px`,
-        lineHeight: `${settings?.fontSize}px`,
-      },
+      style: getStyles(settings?.fontSize, settings?.fontSize),
     },
     {
       id: 3,
       text: moment().format("DD MMM YYYY"),
       className: "text-[8px] font-bold",
       isShow: settings.showDate,
-      style: {
-        fontSize: `${settings?.fontSize}px`,
-        lineHeight: `${settings?.fontSize}px`,
-      },
+      style: getStyles(settings?.fontSize, settings?.fontSize),
     },
     {
       id: 4,
       text: formatRupiah(data?.itemPrice),
       className: `text-xs font-bold`,
       isShow: settings.showPrice,
-      style: {
-        fontSize: `${settings?.fontPrice}px`,
-        lineHeight: `${settings?.fontPrice}px`,
-      },
+      style: getStyles(settings?.fontPrice, settings?.fontPrice),
     },
   ]);
   useEffect(() => {
     const newData = cards?.map((item) => {
       let data = {
         ...item,
-
         isShow:
           (item?.id === 1 && settings.showNameDisplay) ||
           (item?.id === 2 && settings.showCodeDisplay) ||
           (item?.id === 3 && settings.showPriceDisplay) ||
           (item?.id === 4 && settings.showDateDisplay),
+        style: getStyles(
+          item?.id !== 3 ? settings.fontSize : settings?.fontPrice,
+          item?.id !== 3 ? settings.fontSize : settings?.fontPrice
+        ),
       };
-      if (item?.id === 3) {
-        data.style = {
-          fontSize: `${settings?.fontPrice}px`,
-        };
-      }
+
       return data;
     });
     const newList = lists?.map((item) => {
@@ -138,76 +113,18 @@ function PrintPreview(props) {
           (item?.id === 2 && settings.showName) ||
           (item?.id === 3 && settings.showDate) ||
           (item?.id === 4 && settings.showPrice),
+        style: getStyles(
+          item?.id !== 4 ? settings.fontSize : settings?.fontPrice,
+          item?.id !== 4 ? settings.fontSize : settings?.fontPrice
+        ),
       };
-      if (item?.id === 4) {
-        list.style = {
-          fontSize: `${settings?.fontPrice}px`,
-        };
-      }
+
       return list;
     });
     setCards(newData);
     setLists(newList);
   }, [settings]);
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    setCards((prevCards) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      })
-    );
-  }, []);
-  const moveList = useCallback((dragIndex, hoverIndex) => {
-    setLists((prevCards) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      })
-    );
-  }, []);
 
-  const renderCard = useCallback(
-    (card, index) => {
-      if (card?.isShow) {
-        return (
-          <Card
-            key={card.id}
-            index={index}
-            id={card.id}
-            text={card.text}
-            moveCard={moveCard}
-            className={card.className}
-            style={card.style}
-          />
-        );
-      }
-      return null;
-    },
-    [settings]
-  );
-  const renderList = useCallback(
-    (card, index) => {
-      if (card?.isShow) {
-        return (
-          <Card
-            key={card.id}
-            index={index}
-            id={card.id}
-            text={card.text}
-            moveCard={moveList}
-            className={card.className}
-            style={card.style}
-          />
-        );
-      }
-      return null;
-    },
-    [settings]
-  );
   const printStyles = {
     fontSize: `${settings?.fontSize}px`,
     marginTop: `${settings?.marginTop}mm`,
@@ -231,17 +148,13 @@ function PrintPreview(props) {
 	}
 `;
 
-  const renderDisplay = () => {
-    return <div className="flex flex-col items-center">{cards.map((card, i) => renderCard(card, i))}</div>;
-  };
-  const renderPrintCode = () => {
-    return <div className="flex flex-col items-center">{lists.map((list, i) => renderList(list, i))}</div>;
-  };
   const items = [
     ...Array(
       parseInt((settings.showDisplay && settings?.displayQuantity) || 0)
-    ).fill(renderDisplay()),
-    ...Array(parseInt(settings?.printQuantity)).fill(renderPrintCode()),
+    ).fill(<RenderList data={cards} setState={setCards} />),
+    ...Array(parseInt(settings?.printQuantity)).fill(
+      <RenderList data={lists} setState={setLists} />
+    ),
   ];
   const groupedLines = [];
   for (let i = 0; i < items.length; i += parseInt(settings?.printPerLine)) {
@@ -256,65 +169,33 @@ function PrintPreview(props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <p className="font-semibold">Display Setting</p>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="showDisplay"
-                    checked={settings.showDisplay}
-                    onChange={handleChange}
-                  />
-                  <span className="ml-2 font-[500]">Show Data Display</span>
-                </label>
-              </div>
+              {Object.entries({
+                showDisplay: "Show Data Display",
+                showNameDisplay: "Show Name Display",
+                showPriceDisplay: "Show Price Display",
+                showCodeDisplay: "Show Code Display",
+                showDateDisplay: "Show Date Display",
+              }).map(([key, label]) => (
+                <>
+                  {((key !== "showDisplay" && settings?.showDisplay) ||
+                  key === "showDisplay") ? (
+                    <div key={key}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name={key}
+                          checked={settings[key]}
+                          onChange={handleChange}
+                        />
+                        <span className="ml-2 font-[500]">{label}</span>
+                      </label>
+                    </div>
+                  ) : null}
+                </>
+              ))}
+
               {settings?.showDisplay ? (
                 <>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="showNameDisplay"
-                        checked={settings.showNameDisplay}
-                        onChange={handleChange}
-                      />
-                      <span className="ml-2 font-[500]">Show Name Display</span>
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="showPriceDisplay"
-                        checked={settings.showPriceDisplay}
-                        onChange={handleChange}
-                      />
-                      <span className="ml-2 font-[500]">
-                        Show Price Display
-                      </span>
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="showCodeDisplay"
-                        checked={settings.showCodeDisplay}
-                        onChange={handleChange}
-                      />
-                      <span className="ml-2 font-[500]">Show Code Display</span>
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="showDateDisplay"
-                        checked={settings.showDateDisplay}
-                        onChange={handleChange}
-                      />
-                      <span className="ml-2 font-[500]">Show Date Display</span>
-                    </label>
-                  </div>
                   <div>
                     <label className="font-[500]">Print Display Quantity</label>
                     <input
@@ -332,61 +213,25 @@ function PrintPreview(props) {
             </div>
             <div className="flex flex-col gap-2">
               <p className="font-semibold">Barcode Attributes</p>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="showName"
-                    checked={settings.showName}
-                    onChange={handleChange}
-                  />
-                  <span className="ml-2 font-[500]">Show Name</span>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="showPrice"
-                    checked={settings.showPrice}
-                    onChange={handleChange}
-                  />
-                  <span className="ml-2 font-[500]">Show Price</span>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="showCode"
-                    checked={settings.showCode}
-                    onChange={handleChange}
-                  />
-                  <span className="ml-2 font-[500]">Show Code</span>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="showDate"
-                    checked={settings.showDate}
-                    onChange={handleChange}
-                  />
-                  <span className="ml-2 font-[500]">Show Date</span>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="showBarcode"
-                    checked={settings.showBarcode}
-                    onChange={handleChange}
-                  />
-                  <span className="ml-2 font-[500]">Show Barcode</span>
-                </label>
-              </div>
+              {Object.entries({
+                showName: "Show Name",
+                showPrice: "Show Price",
+                showCode: "Show Code",
+                showDate: "Show Date",
+                showBarcode: "Show Barcode",
+              }).map(([key, label]) => (
+                <div key={key}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name={key}
+                      checked={settings[key]}
+                      onChange={handleChange}
+                    />
+                    <span className="ml-2 font-[500]">{label}</span>
+                  </label>
+                </div>
+              ))}
               <div>
                 <label className="font-[500]">Print Quantity</label>
                 <input

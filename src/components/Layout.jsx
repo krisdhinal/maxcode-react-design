@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { logout } from "../utils/Auth";
 import Maxcode from "../assets/maxcode.png";
 import { Link, useNavigate } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const Layout = ({ children, title }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -111,7 +113,7 @@ const Layout = ({ children, title }) => {
                   />
                 </svg>
                 {sidebarOpen && (
-                  <>
+                  <div className="flex items-center justify-between w-full">
                     <span>Barcode</span>
                     <svg
                       className={`w-4 h-4 ml-auto transition-transform duration-200 ${
@@ -127,13 +129,17 @@ const Layout = ({ children, title }) => {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </>
+                  </div>
                 )}
               </button>
               {sidebarOpen && barcodeSubmenuOpen && (
-                <ul className="pl-8 mt-2 space-y-2">
-                  {/* Receive Submenu */}
-                  <li className="text-sm text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
+                <ul className="pl-4 mt-2 space-y-2">
+                  <li
+                    className="text-sm text-gray-300 hover:bg-gray-700 px-3 py-2 rounded cursor-pointer"
+                    onClick={() => {
+                      navigate("/receive");
+                    }}
+                  >
                     <div className="flex items-center space-x-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -152,8 +158,12 @@ const Layout = ({ children, title }) => {
                       <span>Receive</span>
                     </div>
                   </li>
-                  {/* Reports Submenu */}
-                  <li className="text-sm text-gray-300 hover:bg-gray-700 px-3 py-2 rounded">
+                  <li
+                    className="text-sm text-gray-300 hover:bg-gray-700 px-3 py-2 rounded cursor-pointer"
+                    onClick={() => {
+                      navigate("/");
+                    }}
+                  >
                     <div className="flex items-center space-x-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -280,25 +290,30 @@ const Layout = ({ children, title }) => {
 
         {/* Content */}
         <div className="flex-1 overflow-auto">
-            <nav className="bg-gray-100 p-4 relative">
-              <ol className="flex space-x-2 text-sm">
-                <li>
-                  <Link to="/" className="text-blue-600 hover:underline">
-                    Home
-                  </Link>
-                </li>
-                <li>/</li>
-                <li>
-                  <Link to="/barcode" className="text-blue-600 hover:underline">
-                    Barcode
-                  </Link>
-                </li>
-                <li>/</li>
-                <li className="text-gray-500">Print Product</li>
-              </ol>
-            </nav>
+          <nav className="bg-gray-100 p-4 relative">
+            <ol className="flex space-x-2 text-sm">
+              <li>
+                <Link to="/" className="text-blue-600 hover:underline">
+                  Home
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link to="/barcode" className="text-blue-600 hover:underline">
+                  Barcode
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-gray-500">Print Product</li>
+            </ol>
+          </nav>
           <div className="bg-gray-100 min-h-screen p-4 flex justify-center">
-            {children}
+            <DndProvider
+              context={typeof window !== "undefined" ? window : undefined}
+              backend={HTML5Backend}
+            >
+              {children}
+            </DndProvider>
           </div>
         </div>
       </div>

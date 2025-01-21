@@ -7,11 +7,11 @@ function Login() {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("accessToken", "e5b7913c-66d6-43d0-ac41-dddfd1f57ee5");
-    localStorage.setItem("session", "2410574e-e6c7-473a-bce6-c53729119525");
+    localStorage.setItem("accessToken", "08959858-6a2c-4ae3-b2c9-e7231683363f");
+    localStorage.setItem("session", "d8bbc767-001c-4c11-a513-3a15536b55c6");
     localStorage.setItem(
       "token",
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmlzZGhpbmFsQGdtYWlsLmNvbSIsImlhdCI6MTczNzI5MzA2OCwiZXhwIjoxNzM3Mzc5NDY4fQ.tk8vvbAPjkmoGxpES0OXrCmlg9139sg-kvlOvjwqW9BGh8SczYr3BpBTX-jc7MohYjt00K7JlHHoibCJg6iOnQ"
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmlzZGhpbmFsQGdtYWlsLmNvbSIsImlhdCI6MTczNzQzMzQ2MiwiZXhwIjoxNzM3NTE5ODYyfQ.dNfmLzjx6gL6_aPRS0wmmc97T_3spynhl0tYkn5mmVJiMzpDp30K-N-J9hmVL05ZBVega5vltMwRgTPLqap2VQ"
     );
     toast.success("Anda berhasil login!", { position: "top-right" });
     navigate("/");

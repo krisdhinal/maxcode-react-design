@@ -93,7 +93,7 @@ function Receive() {
             />
             <button
               onClick={handleSearch}
-              disabled={query.length === 0 || isLoading}
+              disabled={query?.length === 0 || isLoading}
               className={`px-4 py-2 rounded ${
                 isLoading
                   ? "bg-gray-400 text-white cursor-not-allowed"

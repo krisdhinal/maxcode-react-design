@@ -128,7 +128,7 @@ function ItemPrintReceive(props) {
   const printPerLine = parseInt(settings?.printPerLine);
   const groupedLines = React.useMemo(() => {
     const groups = [];
-    for (let i = 0; i < items.length; i += printPerLine) {
+    for (let i = 0; i < items?.length; i += printPerLine) {
       groups.push(items.slice(i, i + printPerLine));
     }
     return groups;

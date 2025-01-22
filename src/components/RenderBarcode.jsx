@@ -4,6 +4,9 @@ import QRCode from "react-qr-code";
 
 function RenderBarcode(props) {
   const { value, type, settings } = props;
+  if(!value || value.length === 0){
+	return <></>
+  }
   return (
     <>
       {type === "QR" ? (

@@ -30,7 +30,10 @@ function PrintReceive(props) {
         }
 
 		.print-container{
-          border: none !important;    
+          border: none !important;  
+		}
+		.parent-container{
+		  transform: scale(1) !important;  
 		}
 	}
 `;
@@ -59,6 +62,20 @@ function PrintReceive(props) {
     }
   };
 
+  const scaleStyles = () => {
+    if (
+      (settings?.printPerLine > 5 && settings?.pageWidth > 18) ||
+      settings?.pageWidth > 18
+    ) {
+      return {
+        transform: "scale(0.58)",
+        transformOrigin: "left top",
+      };
+    }
+    return {
+      transform: "scale(1)",
+    };
+  };
   return (
     <Accordion
       title="Print Preview"
@@ -147,7 +164,11 @@ function PrintReceive(props) {
           <div
             style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
           >
-            <div ref={contentRef} className="parent-container">
+            <div
+              ref={contentRef}
+              className="parent-container"
+              style={scaleStyles()}
+            >
               <style>{pageStyle}</style>
 
               {data?.map((item, index) => (

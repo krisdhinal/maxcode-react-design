@@ -135,6 +135,20 @@ function PrintPreview(props) {
     width: `${settings?.pageWidth - 0.5}cm`,
   };
   const ref = useRef(null);
+  const scaleStyles = () => {
+    if (
+      (settings?.printPerLine > 5 && settings?.pageWidth > 18) ||
+      settings?.pageWidth > 18
+    ) {
+      return {
+        transform: "scale(0.58)",
+        transformOrigin: "left top",
+      };
+    }
+    return {
+      transform: "scale(1)",
+    };
+  };
   const pageStyle = `
   @media print {
 		@page {
@@ -144,6 +158,9 @@ function PrintPreview(props) {
 
 		.print-container{
           border: none !important;    
+		}
+		.parent-container{
+		  transform: scale(1) !important;  
 		}
 	}
 `;
@@ -258,7 +275,7 @@ function PrintPreview(props) {
           <div
             style={{ maxWidth: ref.current ? ref.current.offsetWidth : "100%" }}
           >
-            <div ref={contentRef} className="parent-container">
+            <div ref={contentRef} className="parent-container" style={scaleStyles()}>
               {groupedLines.map((line, index) => (
                 <div
                   key={index}

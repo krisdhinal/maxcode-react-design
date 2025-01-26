@@ -78,7 +78,7 @@ function Receive() {
   };
 
   return (
-    <Layout>
+    <Layout breadcrumbTitle="Receive">
       <div className="w-full bg-white p-6 h-fit rounded-lg shadow-md">
         <div className="p-8">
           <h1 className="text-2xl font-bold mb-4">Search Receive</h1>

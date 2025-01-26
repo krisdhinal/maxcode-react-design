@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children, title, breadcrumbTitle }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -294,17 +294,11 @@ const Layout = ({ children, title }) => {
             <ol className="flex space-x-2 text-sm">
               <li>
                 <Link to="/" className="text-blue-600 hover:underline">
-                  Home
-                </Link>
-              </li>
-              <li>/</li>
-              <li>
-                <Link to="/barcode" className="text-blue-600 hover:underline">
                   Barcode
                 </Link>
               </li>
               <li>/</li>
-              <li className="text-gray-500">Print Product</li>
+              <li className="text-gray-500">{breadcrumbTitle || "-"}</li>
             </ol>
           </nav>
           <div className="bg-gray-100 min-h-screen p-4 flex justify-center">

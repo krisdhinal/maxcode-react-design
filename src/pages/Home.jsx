@@ -5,11 +5,15 @@ import { fetchProductDetails } from "../services/api";
 import { toast } from "react-toastify";
 import DetailProduct from "../components/DetailProduct";
 import PrintPreview from "../components/PrintPreview";
+import { logout } from "../utils/Auth";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
+
   const initStatePrint = JSON.parse(localStorage.getItem("printSettings")) || {
     showName: true,
     showPrice: true,
@@ -66,6 +70,11 @@ function Home() {
       }
     } catch (err) {
       toast.error(err.message || "Data not found", { position: "top-right" });
+      if (err.message?.includes("authentication")) {
+        logout();
+        navigate("/login");
+        toast.info("Anda telah logout", { position: "top-right" });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +98,7 @@ function Home() {
   };
 
   return (
-    <Layout>
+    <Layout breadcrumbTitle="Print">
       <div className="w-full bg-white p-6 h-fit rounded-lg shadow-md">
         <div className="p-8">
           <h1 className="text-2xl font-bold mb-4">Search Product</h1>
